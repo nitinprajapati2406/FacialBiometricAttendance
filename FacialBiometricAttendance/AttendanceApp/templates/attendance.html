@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}Attendance{% endblock %}
+{% block main %}
+{% if message %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin: auto;">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endif %}
+<div class="row">
+    <div class="col m-5">
+        <img src="{% static 'images/icon.gif' %}" class="rounded mx-auto d-block w-100" alt="...">
+    </div>
+    <div class="col m-5">
+        <form action="{% url 'AttendanceApp:attendance' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group m-3">
+                <h4>Mark Attendance</h4>
+                <label for="images">Upload Images To Mark Attendance(multiple):</label>
+
+                <input type="file" class="form-control-file" id="images" name="images[]" multiple required><br>
+
+                <label class="m-1" for="face_group">Select Class/Group For Identification</label>
+                <select name="group" id="class_">
+                    <option value="">--Select--</option>
+                    {% for group in unique_groups %}
+                    <option value="{{group}}">{{group}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mx-4">Mark Attendance</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

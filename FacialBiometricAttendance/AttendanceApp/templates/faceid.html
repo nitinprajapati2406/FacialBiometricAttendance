@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}Attendance{% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col m-5">
+        <img src="{% static 'images/creation.gif' %}" class="rounded mx-auto d-block w-100" alt="...">
+    </div>
+    <div class="col m-5">
+        {% if message %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin: auto;">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        <form method="post" action="{% url 'AttendanceApp:faceid' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group m-3">
+                <h4>Create Face IDs</h4>
+                <label for="images">Upload Images To Create Face IDs
+                    <ol>
+                        <li>Make sure that the image files are named after the person to whom the image belongs</li>
+                        <li>Image should be of passport size with clear face view</li>
+                        <li>The image should contain face of only the person whom the image belongs</li>
+                        <li>If there are more than one person with same name add suffix to their image file after their name to make it unique</li>
+                    </ol>
+                </label>
+                <input type="file" class="form-control-file" id="images" name="images" multiple required> <br>
+                <label class="m-1" for="face_group">Select Class/Group For Identification</label>
+                <select name="selectgroup" id="groupselect" onchange="toggleInput()">
+                    <option value="">--Select--</option>
+                    {% for group in unique_groups %}
+                    <option value="{{group}}">{{group}}</option>
+                    {% endfor %}
+                </select>
+                <h6>OR</h6>
+                <input type="text" name="inputgroup" id="groupinput" placeholder="Create New Group">
+            </div>
+            <button type="submit" class="btn btn-primary mx-4">Create Face IDs</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
